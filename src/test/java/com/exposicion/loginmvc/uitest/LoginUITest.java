@@ -33,7 +33,7 @@ public class LoginUITest {
     // URL del Selenium Hub, accesible desde el agente de Jenkins (Docker Host)
     private static final String SELENIUM_HUB_URL = "http://localhost:4444/wd/hub";
 
-    @BeforeAll
+    @BeforeAll 
     static void setupClass() {
         // En este escenario de Docker Grid, WebDriverManager ya no es necesario.
     }
