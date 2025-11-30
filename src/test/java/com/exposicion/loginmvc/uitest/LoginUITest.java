@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.factory.annotation.Value; // Importación necesaria
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
@@ -24,11 +24,10 @@ public class LoginUITest {
 
     private String baseUrl;
     
-    // Inyecta el nombre del contenedor de Jenkins (pasado por Maven)
-    @Value("${app.host.name:localhost}") 
-    private String appHostName;
+    // **CORRECCIÓN 1: LEER DIRECTAMENTE DEL SISTEMA.** // Esto asegura que la propiedad -Dapp.host.name pasada por Maven sea utilizada.
+    private final String appHostName = System.getProperty("app.host.name", "localhost"); 
 
-    // Inyecta el nombre del servicio del Hub (usamos el nombre del contenedor Docker)
+    // Mantenemos la inyección del Hub
     @Value("${selenium.hub.host:selenium-hub}")
     private String seleniumHubHost;
     
@@ -37,19 +36,18 @@ public class LoginUITest {
     @BeforeEach
     void setupTest() throws Exception {
         
-        // Construye la URL del Hub usando el host inyectado
+        // Construye la URL del Hub
         SELENIUM_HUB_URL = "http://" + seleniumHubHost + ":4444/wd/hub";
         
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
         options.setAcceptInsecureCerts(true);
 
-        // Conexión al Selenium Grid
         driver = new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
 
         driver.manage().window().maximize();
 
-        // **CORRECCIÓN CRÍTICA:** Usamos el nombre del contenedor de Jenkins para que el Node pueda acceder a la App.
+        // **CORRECCIÓN 2: BASE URL CORRECTA.** Usará 'jenkins_practica' si el script de Jenkins funciona.
         baseUrl = "http://" + appHostName + ":" + port + "/";
         
         System.out.println("DEBUG: App Base URL para la prueba UI: " + baseUrl);
@@ -65,7 +63,7 @@ public class LoginUITest {
 
     @Test
     void testLogin_CredencialesValidas_DebeIrAHome() {
-        driver.get(baseUrl); // Accede a http://jenkins_practica:PUERTO/
+        driver.get(baseUrl);
 
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("password123");
