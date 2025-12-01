@@ -10,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-
+// d
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // CORRECCIÓN CLAVE: Usamos DEFINED_PORT para forzar el uso de server.port=8082
