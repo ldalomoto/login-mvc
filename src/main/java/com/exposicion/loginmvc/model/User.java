@@ -4,14 +4,12 @@ public class User {
 
     private String username;
     private String password;
-    
-    // Asumimos que todo usuario tiene un ID (simulando una clave primaria de BD)
+
     private Long id; 
     
     public User(){
     }
 
-    // Constructor, Getters y Setters...
     public User(Long id, String username, String password) {
         this.id = id;
         this.username = username;
