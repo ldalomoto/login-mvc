@@ -1,9 +1,5 @@
 package com.exposicion.loginmvc.model;
 
-/**
- * Clase POJO (Plain Old Java Object) que representa al usuario.
- * Contiene datos simples y es usada para transportar información entre capas.
- */
 public class User {
 
     private String username;
@@ -13,7 +9,6 @@ public class User {
     private Long id; 
     
     public User(){
-        //TODO
     }
 
     // Constructor, Getters y Setters...
