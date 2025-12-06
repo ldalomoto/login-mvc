@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserRepository {
 
     // Simulación del "usuario maestro" en la base de datos
-    private final User ADMIN_USER = new User(1L, "admin", "password123");
+    private final User AdminUser = new User(1L, "admin", "password123");
 
     /**
      * Simula la búsqueda de un usuario por su nombre en la BD.
@@ -23,8 +23,8 @@ public class UserRepository {
     public Optional<User> findByUsername(String username) {
 
         // Simulación: Si el nombre de usuario coincide con el predefinido, devuelve el objeto User.
-        if (ADMIN_USER.getUsername().equals(username)) {
-            return Optional.of(ADMIN_USER);
+        if (AdminUser.getUsername().equals(username)) {
+            return Optional.of(AdminUser);
         }
 
         // Si no se encuentra, devuelve un Optional vacío (como lo haría un repositorio real)
