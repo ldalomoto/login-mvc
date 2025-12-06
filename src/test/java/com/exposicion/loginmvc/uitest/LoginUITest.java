@@ -101,4 +101,5 @@ public class LoginUITest {
         String src = driver.getPageSource();
         assertTrue(src.contains("Credenciales incorrectas"), "Debe mostrar un mensaje de error por credenciales inválidas.");
     }
+    
 }
