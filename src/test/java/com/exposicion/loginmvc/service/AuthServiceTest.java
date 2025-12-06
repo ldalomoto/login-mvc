@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 // 1. Le decimos a JUnit 5 que use la extensión de Mockito
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
-    // Pruebas
+    // Pruebas: push de prueba de jenkins
     // 2. @Mock: Crea un "doble" del repositorio.
     // No conecta a la BD real, es un objeto tonto que nosotros controlamos.
     @Mock
