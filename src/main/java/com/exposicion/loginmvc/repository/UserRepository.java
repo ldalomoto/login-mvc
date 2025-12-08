@@ -7,7 +7,7 @@ import java.util.Optional;
 //CODIGO UWU
 @Repository
 public class UserRepository {
-
+///dsadasdadsa AJDHjashdjas
     // Simulación del "usuario maestro" en la base de datos
     private final User adminUser = new User(1L, "admin", "password123");
 
