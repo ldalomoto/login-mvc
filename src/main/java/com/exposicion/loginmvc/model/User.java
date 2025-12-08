@@ -4,7 +4,7 @@ public class User {
 
     private String username;
     private String password;
-
+    private String cedula;
     private Long id; 
     
     public User(){
