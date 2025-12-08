@@ -4,6 +4,7 @@ public class User {
 
     private String username;
     private String password;
+    private String persona;
     private Long id; 
     
     public User(){
