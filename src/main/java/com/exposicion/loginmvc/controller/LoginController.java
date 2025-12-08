@@ -7,15 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-////////
+
 
 @Controller
 public class LoginController {
-/////////
+// COMENTARIO DE PRUEBA
 
     @Autowired
     private AuthService authService;
-////////////
 
     @GetMapping({"/", "/login"})
     public String showLoginForm(Model model) {
