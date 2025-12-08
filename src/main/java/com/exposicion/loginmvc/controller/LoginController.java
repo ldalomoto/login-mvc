@@ -7,13 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+////////
 @Controller
 public class LoginController {
-
+/////////
     @Autowired
     private AuthService authService;
-
+////////////
     @GetMapping({"/", "/login"})
     public String showLoginForm(Model model) {
         return "login"; // Vista login.html
@@ -42,5 +42,3 @@ public class LoginController {
         return "home";
     }
 }
-
-//SEXOSEXITO UWU
