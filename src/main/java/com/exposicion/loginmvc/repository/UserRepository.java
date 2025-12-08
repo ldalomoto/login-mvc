@@ -4,7 +4,7 @@ import com.exposicion.loginmvc.model.User;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
-
+//CODIGO UWU
 @Repository
 public class UserRepository {
 

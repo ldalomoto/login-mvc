@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 ////////
+
 @Controller
 public class LoginController {
 /////////
+
     @Autowired
     private AuthService authService;
 ////////////
+
     @GetMapping({"/", "/login"})
     public String showLoginForm(Model model) {
         return "login"; // Vista login.html
@@ -21,6 +24,23 @@ public class LoginController {
 
     @PostMapping("/login")
     public String processLogin(
+            @RequestParam String username,
+            @RequestParam String password,
+            Model model) {
+
+        // Usamos el Servicio para autenticar
+        if (authService.authenticate(username, password)) {
+            // Éxito: Redirecciona a la página de bienvenida
+            return "redirect:/home";
+        } else {
+            // Fallo: Vuelve al login con mensaje de error
+            model.addAttribute("error", "Credenciales incorrectas. Verifique usuario y contraseña.");
+            return "login";
+        }
+    }
+
+    @PostMapping("/login-franco:V")
+    public String francoLogin(
             @RequestParam String username,
             @RequestParam String password,
             Model model) {
