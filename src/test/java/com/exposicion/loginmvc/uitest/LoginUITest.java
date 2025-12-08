@@ -8,27 +8,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-// Usamos DEFINED_PORT para asegurar que Spring Boot levante la app en 8082
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+// El test asume que la aplicación está corriendo EXTERNAMENTTE en el contenedor 'app-test'
+
 public class LoginUITest {
 
     private WebDriver driver;
     
-    // Puerto fijo para la aplicación
     private final int fixedPort = 8082;
     
-    // CORRECCIÓN CLAVE: El valor por defecto es ahora 'app-test', 
-    // el nombre resoluble del contenedor de la aplicación en la red de Docker.
-    @Value("${app.host.name:app-test}") 
-    private String appHostName; 
-
-    // Host del Selenium Hub, pasado desde Jenkins
-    @Value("${selenium.hub.host:selenium-hub}")
+    private String appHostName;
     private String seleniumHubHost;
     
     private String SELENIUM_HUB_URL;
@@ -37,16 +28,21 @@ public class LoginUITest {
     @BeforeEach
     void setupTest() throws Exception {
         
-        // 1. Configurar la URL del Hub de Selenium
+        // 1. OBTENER PROPIEDADES DEL SISTEMA (pasadas por Maven)
+        // Utilizamos valores por defecto en caso de que Jenkins no los pase
+        appHostName = System.getProperty("app.host.name", "app-test");
+        seleniumHubHost = System.getProperty("selenium.hub.host", "selenium-hub");
+
+        // 2. Configurar la URL del Hub de Selenium
         SELENIUM_HUB_URL = "http://" + seleniumHubHost + ":4444/wd/hub";
         
-        // 2. Configurar el WebDriver para Chrome Headless
+        // 3. Configurar el WebDriver para Chrome Headless
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
         options.setAcceptInsecureCerts(true);
 
-        // 3. Inicializar RemoteWebDriver con reintentos para manejar el arranque de Selenium Grid
-        int maxAttempts = 3;
+        // 4. Inicializar RemoteWebDriver con reintentos
+        int maxAttempts = 5; 
         int currentAttempt = 0;
         Exception lastException = null;
 
@@ -57,18 +53,19 @@ public class LoginUITest {
             } catch (Exception e) {
                 lastException = e;
                 currentAttempt++;
-                System.out.println("ADVERTENCIA: Falló conexión con Selenium Hub. Intento " + currentAttempt + "/" + maxAttempts + ". Esperando 2 segundos...");
-                Thread.sleep(2000);
+                // Imprimir advertencia con System.err para visibilidad
+                System.err.println("ADVERTENCIA: Falló conexión con Selenium Hub. Intento " + currentAttempt + "/" + maxAttempts + ". Esperando 3 segundos...");
+                Thread.sleep(3000);
             }
         }
 
         if (driver == null) {
-            throw new RuntimeException("Fallo al inicializar RemoteWebDriver después de " + maxAttempts + " intentos.", lastException);
+            throw new RuntimeException("Fallo al inicializar RemoteWebDriver después de " + maxAttempts + " intentos. Revisar que Selenium Grid esté levantado.", lastException);
         }
 
         driver.manage().window().maximize();
 
-        // 4. Configurar la Base URL de la aplicación
+        // 5. Configurar la Base URL de la aplicación (usando el nombre de host de Docker)
         baseUrl = "http://" + appHostName + ":" + fixedPort + "/";
         
         System.out.println("DEBUG: App Base URL para la prueba UI: " + baseUrl);
@@ -104,4 +101,5 @@ public class LoginUITest {
         String src = driver.getPageSource();
         assertTrue(src.contains("Credenciales incorrectas"), "Debe mostrar un mensaje de error por credenciales inválidas.");
     }
+    
 }
