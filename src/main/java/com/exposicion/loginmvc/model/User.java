@@ -7,13 +7,8 @@ package com.exposicion.loginmvc.model;
 public class User {
     private String username;
     private String password;
-<<<<<<< Updated upstream
-=======
     private String cedula;
-
-    private Long id; 
->>>>>>> Stashed changes
-    
+  
     // Asumimos que todo usuario tiene un ID (simulando una clave primaria de BD)
     private Long id; 
 
