@@ -37,6 +37,23 @@ public class LoginController {
             return "login";
         }
     }
+    
+        @PostMapping("/franco")
+    public String frfanco(
+            @RequestParam String username,
+            @RequestParam String password,
+            Model model) {
+
+        // Usamos el Servicio para autenticar
+        if (authService.authenticate(username, password)) {
+            // Éxito: Redirecciona a la página de bienvenida
+            return "redirect:/home";
+        } else {
+            // Fallo: Vuelve al login con mensaje de error
+            model.addAttribute("error", "Credenciales incorrectas. Verifique usuario y contraseña.");
+            return "login";
+        }
+    }
 
     // --- Petición GET: Página de Bienvenida (Home) ---
     @GetMapping("/home")
